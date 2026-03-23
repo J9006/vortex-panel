@@ -3,171 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex Visual | Panel de Control CEO</title>
+    <title>Vortex Visual | Panel CEO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        :root { 
-            --bg-dark: #070b14; 
-            --bg-panel: #0f172a; 
-            --accent-pink: #ff4d6d; 
-            --accent-cyan: #00f2fe; 
-            --text-main: #f1f5f9; 
-            --text-muted: #64748b; 
-        }
-        body { 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            font-family: 'Segoe UI', sans-serif; 
-        }
-        .sidebar { 
-            width: 280px; 
-            background-color: var(--bg-panel); 
-            border-right: 1px solid #1e293b; 
-            position: fixed; 
-            height: 100vh; 
-            padding-top: 25px; 
-            z-index: 1000; 
-        }
-        .brand-container { 
-            padding: 0 25px 25px 25px; 
-            border-bottom: 1px solid #1e293b; 
-            margin-bottom: 20px; 
-        }
-        .logo-box { 
-            width: 100%; 
-            height: 60px; 
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan)); 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 900; 
-            color: white; 
-            letter-spacing: 3px; 
-        }
-        .nav-link { 
-            color: var(--text-muted); 
-            padding: 12px 20px; 
-            border-radius: 10px; 
-            margin: 5px 15px; 
-            cursor: pointer;
-            transition: 0.3s; 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none; 
-        }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--accent-cyan); 
-            background: rgba(0, 242, 254, 0.1); 
-            border: 1px solid rgba(0, 242, 254, 0.2); 
-        }
-        .main-content { 
-            margin-left: 280px; 
-            padding: 40px; 
-        }
-        .cyber-card { 
-            background-color: var(--bg-panel); 
-            border: 1px solid #1e293b; 
-            border-radius: 16px; 
-            padding: 25px; 
-            margin-bottom: 25px; 
-        }
-        .btn-vortex { 
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); 
-            border: none; 
-            color: white; 
-            font-weight: bold; 
-            border-radius: 8px; 
-            padding: 10px 20px; 
-        }
-        .btn-vortex:hover { color: white; opacity: 0.9; }
-        .status-pill { 
-            padding: 4px 12px; 
-            border-radius: 20px; 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-        }
-        .status-online { 
-            background: rgba(0, 255, 135, 0.1); 
-            color: #00ff87; 
-            border: 1px solid #00ff87; 
-        }
-        .status-offline { 
-            background: rgba(255, 77, 109, 0.1); 
-            color: #ff4d6d; 
-            border: 1px solid #ff4d6d; 
-        }
-        .status-pending {
-            background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
-            border: 1px solid #ffc107;
-        }
-        .form-control, .form-select {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            color: white;
-        }
-        .form-control:focus, .form-select:focus {
-            background-color: #1e293b;
-            border-color: var(--accent-cyan);
-            color: white;
-            box-shadow: 0 0 0 0.25rem rgba(0, 242, 254, 0.25);
-        }
-        .table-dark {
-            --bs-table-bg: transparent;
-            --bs-table-color: var(--text-main);
-            --bs-table-border-color: #1e293b;
-        }
-        .modal-content {
-            background-color: var(--bg-panel);
-            border: 1px solid #1e293b;
-            color: white;
-        }
-        .modal-header, .modal-footer {
-            border-color: #1e293b;
-        }
-        .btn-close {
-            filter: invert(1);
-        }
-        #map { 
-            height: 420px; 
-            border-radius: 12px; 
-            border: 1px solid #1e293b; 
-        }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-        .metric-card {
-            background: linear-gradient(135deg, rgba(255,77,109,0.1), rgba(0,242,254,0.1));
-            border: 1px solid rgba(0,242,254,0.2);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .upload-area {
-            border: 2px dashed #334155;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-area:hover {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 242, 254, 0.05);
-        }
+        :root { --bg-dark: #070b14; --bg-panel: #0f172a; --accent-pink: #ff4d6d; --accent-cyan: #00f2fe; }
+        body { background-color: var(--bg-dark); color: #f1f5f9; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .cyber-card { background-color: var(--bg-panel); border: 1px solid #1e293b; border-radius: 16px; padding: 25px; }
+        .btn-vortex { background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); border: none; color: white; font-weight: bold; border-radius: 8px; padding: 10px 20px; cursor: pointer; }
+        .btn-vortex:hover { opacity: 0.9; color: white; }
+        .form-control { background-color: #1e293b; border: 1px solid #334155; color: white; }
+        .form-control:focus { background-color: #1e293b; color: white; border-color: var(--accent-cyan); }
+        .sidebar { width: 280px; background-color: var(--bg-panel); border-right: 1px solid #1e293b; position: fixed; height: 100vh; padding-top: 25px; z-index: 1000; left: 0; top: 0; }
+        .main-content { margin-left: 280px; padding: 40px; }
+        .nav-link { color: #64748b; padding: 12px 20px; border-radius: 10px; margin: 5px 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
+        .nav-link:hover, .nav-link.active { color: var(--accent-cyan); background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .metric-card { background: linear-gradient(135deg, rgba(255,77,109,0.1), rgba(0,242,254,0.1)); border: 1px solid rgba(0,242,254,0.2); border-radius: 12px; padding: 20px; text-align: center; }
+        .metric-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-box { width: 100%; height: 60px; background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; letter-spacing: 3px; }
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        #main-app { display: none; }
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -176,52 +32,50 @@
     <div class="toast-container" id="toast-container"></div>
 
     <!-- Login Screen -->
-    <div id="login-screen" class="d-flex align-items-center justify-content-center" style="height: 100vh; background: var(--bg-dark);">
+    <div id="login-screen">
         <div class="cyber-card" style="width: 400px;">
             <div class="text-center mb-4">
-                <div class="logo-box mb-3" style="height: 80px;">VORTEX</div>
+                <div class="logo-box mb-3">VORTEX</div>
                 <h4>Panel de Control CEO</h4>
-                <small class="text-muted">Ingresa tus credenciales maestras</small>
             </div>
+            <div id="error-msg" class="alert alert-danger d-none"></div>
             <form id="login-form">
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control" id="login-email" required value="ceo@vortex.com">
+                    <input type="email" class="form-control" id="login-email" value="ceo@vortex.com" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="login-password" required value="Vortex2026!">
+                    <input type="password" class="form-control" id="login-password" value="Vortex2026!" required>
                 </div>
-                <button type="submit" class="btn btn-vortex w-100">Ingresar al Sistema</button>
-                <div class="mt-3 text-center">
-                    <small class="text-muted">API URL</small>
-                    <input type="text" id="api-url" class="form-control form-control-sm mt-1" value="https://vortex-api-z33q.onrender.com">
+                <button type="submit" class="btn btn-vortex w-100" id="btn-login">
+                    <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+                    <span id="btn-text">Ingresar al Sistema</span>
+                </button>
+                <div class="mt-3">
+                    <input type="text" id="api-url" class="form-control form-control-sm" value="https://vortex-api-z33q.onrender.com" readonly>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Main App -->
-    <div id="main-app" style="display: none;">
+    <div id="main-app">
         <div class="sidebar">
-            <div class="brand-container">
-                <div class="logo-box">VORTEX</div>
+            <div class="p-4 border-bottom border-secondary">
+                <div class="logo-box" style="height: 50px;">VORTEX</div>
             </div>
-            <nav class="nav flex-column">
-                <a class="nav-link active" onclick="showSection('dashboard')"><i class="fas fa-th-large me-3"></i> Dashboard</a>
-                <a class="nav-link" onclick="showSection('crm')"><i class="fas fa-users me-3"></i> CRM Clientes</a>
-                <a class="nav-link" onclick="showSection('devices')"><i class="fas fa-microchip me-3"></i> Dispositivos</a>
-                <a class="nav-link" onclick="showSection('map')"><i class="fas fa-map-marked-alt me-3"></i> Mapa GPS</a>
-                <a class="nav-link" onclick="showSection('content')"><i class="fas fa-film me-3"></i> Biblioteca</a>
-                <a class="nav-link" onclick="showSection('billing')"><i class="fas fa-file-invoice-dollar me-3"></i> Facturación</a>
+            <nav class="nav flex-column mt-3">
+                <a class="nav-link active" onclick="showSection('dashboard', this)"><i class="fas fa-th-large me-3"></i> Dashboard</a>
+                <a class="nav-link" onclick="showSection('crm', this)"><i class="fas fa-users me-3"></i> CRM Clientes</a>
+                <a class="nav-link" onclick="showSection('devices', this)"><i class="fas fa-microchip me-3"></i> Dispositivos</a>
+                <a class="nav-link" onclick="showSection('billing', this)"><i class="fas fa-file-invoice-dollar me-3"></i> Facturación</a>
                 <hr class="mx-3 border-secondary">
                 <a class="nav-link text-danger" onclick="logout()"><i class="fas fa-power-off me-3"></i> Salir</a>
             </nav>
         </div>
 
         <div class="main-content">
-            
-            <!-- DASHBOARD -->
             <div id="view-dashboard" class="view-section">
                 <h2 class="mb-4">Dashboard Ejecutivo</h2>
                 <div class="row mb-4">
@@ -250,972 +104,175 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="cyber-card">
-                    <h5 class="mb-3">Estado del Sistema en Tiempo Real</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><i class="fas fa-circle text-success me-2"></i> API: <span id="api-status">Conectado</span></p>
-                            <p><i class="fas fa-circle text-warning me-2"></i> Base de Datos: <span id="db-status">Verificando...</span></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><i class="fas fa-cloud me-2 text-info"></i> S3 Storage: <span id="s3-status">Verificando...</span></p>
-                            <p><i class="fas fa-code-branch me-2 text-info"></i> Versión: 2.1.0-CEO</p>
-                        </div>
-                    </div>
+                    <h5 class="mb-3">Estado del Sistema</h5>
+                    <p><i class="fas fa-check-circle text-success me-2"></i> API: Conectada</p>
+                    <p><i class="fas fa-check-circle text-success me-2"></i> Base de Datos: Operativa</p>
+                    <p><i class="fas fa-user-shield text-info me-2"></i> Usuario: CEO</p>
                 </div>
             </div>
 
-            <!-- CRM CLIENTES -->
             <div id="view-crm" class="view-section" style="display:none;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Gestión de Clientes</h2>
-                    <button class="btn btn-vortex" onclick="openClientModal()"><i class="fas fa-plus me-2"></i>Nuevo Cliente</button>
+                    <button class="btn btn-vortex" onclick="alert('Función de creación de clientes - En desarrollo')"><i class="fas fa-plus me-2"></i>Nuevo Cliente</button>
                 </div>
-                
                 <div class="cyber-card">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover">
-                            <thead>
-                                <tr>
-                                    <th>NIT</th>
-                                    <th>Empresa</th>
-                                    <th>Plan</th>
-                                    <th>Unidades</th>
-                                    <th>Hologramas</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="clients-table">
-                                <tr><td colspan="7" class="text-center">Cargando datos empresariales...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>NIT</th>
+                                <th>Empresa</th>
+                                <th>Plan</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No hay clientes registrados aún</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <!-- DISPOSITIVOS -->
+            
             <div id="view-devices" class="view-section" style="display:none;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Red de Proyectores</h2>
-                    <button class="btn btn-vortex" onclick="openDeviceModal()"><i class="fas fa-plus me-2"></i>Registrar Equipo</button>
-                </div>
-                
+                <h2 class="mb-4">Dispositivos</h2>
                 <div class="cyber-card">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Cliente</th>
-                                    <th>Ubicación</th>
-                                    <th>Estado</th>
-                                    <th>Temperatura</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="devices-table">
-                                <tr><td colspan="6" class="text-center">Cargando red de dispositivos...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <p>Gestión de proyectores holográficos</p>
+                    <p class="text-muted">Lista de dispositivos aparecerá aquí</p>
                 </div>
             </div>
-
-            <!-- MAPA -->
-            <div id="view-map" class="view-section" style="display:none;">
-                <h2 class="mb-4">Mapa de Dispositivos GPS</h2>
-                <div class="cyber-card p-2">
-                    <div id="map"></div>
-                </div>
-            </div>
-
-            <!-- CONTENIDO -->
-            <div id="view-content" class="view-section" style="display:none;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Biblioteca de Contenido</h2>
-                    <div>
-                        <button class="btn btn-outline-info me-2" onclick="checkS3Status()"><i class="fas fa-cloud me-2"></i>Verificar S3</button>
-                        <button class="btn btn-vortex" onclick="openUploadModal()"><i class="fas fa-upload me-2"></i>Subir Holograma</button>
-                    </div>
-                </div>
-                
-                <div class="cyber-card">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Archivo</th>
-                                    <th>Cliente</th>
-                                    <th>Tamaño</th>
-                                    <th>Almacenamiento</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="content-table">
-                                <tr><td colspan="6" class="text-center">Cargando biblioteca...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FACTURACIÓN -->
+            
             <div id="view-billing" class="view-section" style="display:none;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Cartera y Facturación</h2>
-                    <button class="btn btn-vortex" onclick="openInvoiceModal()"><i class="fas fa-plus me-2"></i>Nueva Factura</button>
-                </div>
-                
+                <h2 class="mb-4">Facturación</h2>
                 <div class="cyber-card">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover">
-                            <thead>
-                                <tr>
-                                    <th># Factura</th>
-                                    <th>Cliente</th>
-                                    <th>Monto</th>
-                                    <th>Vencimiento</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="invoices-table">
-                                <tr><td colspan="6" class="text-center">Cargando cartera...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- MODALES -->
-
-    <!-- Modal Cliente -->
-    <div class="modal fade" id="clientModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nuevo Cliente Empresarial</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="client-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">NIT *</label>
-                                <input type="text" class="form-control" id="client-nit" placeholder="901234567-8" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Plan *</label>
-                                <select class="form-select" id="client-plan">
-                                    <option value="pilot">Pilot (Prueba)</option>
-                                    <option value="prime" selected>Prime ($3.95M/mes - 1 unidad)</option>
-                                    <option value="duo">Duo ($6.8M/mes - 2 unidades)</option>
-                                    <option value="enterprise">Enterprise ($12M/mes - 5 unidades)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Razón Social / Empresa *</label>
-                            <input type="text" class="form-control" id="client-company" placeholder="Nombre legal de la empresa" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nombre Contacto Principal *</label>
-                                <input type="text" class="form-control" id="client-contact" placeholder="Nombre del gerente comercial" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Teléfono WhatsApp *</label>
-                                <input type="text" class="form-control" id="client-phone" placeholder="+57 300 123 4567" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Email Corporativo *</label>
-                                <input type="email" class="form-control" id="client-email" placeholder="contacto@empresa.com" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Ciudad</label>
-                                <input type="text" class="form-control" id="client-city" value="Bogotá">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Dirección Fiscal</label>
-                            <input type="text" class="form-control" id="client-address" placeholder="Calle, número, oficina">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-vortex" onclick="saveClient()">Crear Cliente y Enviar WhatsApp</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Dispositivo -->
-    <div class="modal fade" id="deviceModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar Proyector Holográfico</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="device-form">
-                        <div class="mb-3">
-                            <label class="form-label">ID del Dispositivo *</label>
-                            <input type="text" class="form-control" id="device-id" placeholder="VX-BOG-001" required>
-                            <small class="text-muted">Formato sugerido: VX-[CIUDAD]-[NUM]</small>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Cliente Asignado</label>
-                            <select class="form-select" id="device-client">
-                                <option value="">Sin asignar (inventario)</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nombre Ubicación *</label>
-                            <input type="text" class="form-control" id="device-location" placeholder="C.C. Andino - Piso 3 - Entrada Principal" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Latitud GPS</label>
-                                <input type="number" step="any" class="form-control" id="device-lat" placeholder="4.6097">
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Longitud GPS</label>
-                                <input type="number" step="any" class="form-control" id="device-lng" placeholder="-74.0817">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Ciudad</label>
-                            <input type="text" class="form-control" id="device-city" value="Bogotá">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-vortex" onclick="saveDevice()">Registrar Equipo</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Upload -->
-    <div class="modal fade" id="uploadModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Subir Contenido Holográfico (.bin)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Cliente Propietario</label>
-                        <select class="form-select" id="upload-client">
-                            <option value="">Sin asignar (biblioteca general)</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <div class="upload-area" onclick="document.getElementById('file-input').click()">
-                            <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
-                            <p>Arrastra archivos .bin aquí o haz clic para seleccionar</p>
-                            <small class="text-muted">Formato: Archivos binarios de proyección holográfica<br>Máximo: 50MB por archivo</small>
-                            <input type="file" id="file-input" accept=".bin" style="display:none" onchange="handleFileSelect(this)">
-                        </div>
-                    </div>
-                    <div id="upload-progress" style="display:none;">
-                        <div class="progress mb-2">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width: 0%" id="progress-bar"></div>
-                        </div>
-                        <small class="text-muted" id="upload-status">Preparando subida segura...</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Factura -->
-    <div class="modal fade" id="invoiceModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Generar Factura de Cobro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="invoice-form">
-                        <div class="mb-3">
-                            <label class="form-label">Cliente *</label>
-                            <select class="form-select" id="invoice-client" required>
-                                <option value="">Seleccione cliente...</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Concepto</label>
-                            <select class="form-select" id="invoice-type">
-                                <option value="monthly">Mensualidad Servicio</option>
-                                <option value="activation">Activación Instalación</option>
-                                <option value="upsell">Unidades Adicionales</option>
-                                <option value="support">Soporte Técnico</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Monto (COP) *</label>
-                            <input type="number" class="form-control" id="invoice-amount" placeholder="3950000" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Descripción / Detalle</label>
-                            <textarea class="form-control" id="invoice-desc" rows="2" placeholder="Servicio holográfico mes de marzo..."></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fecha Vencimiento</label>
-                            <input type="date" class="form-control" id="invoice-due">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-vortex" onclick="saveInvoice()">Generar y Enviar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Asignar Contenido -->
-    <div class="modal fade" id="assignModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Asignar Contenido a Proyector</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info mb-3">
-                        <small>Esta acción enviará el comando a la Orange Pi para descargar y reproducir el holograma seleccionado.</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contenido (.bin)</label>
-                        <select class="form-select" id="assign-content"></select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dispositivo Destino</label>
-                        <select class="form-select" id="assign-device"></select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-vortex" onclick="assignContent()">Asignar y Transmitir</button>
+                    <p>Cartera y facturas</p>
+                    <p class="text-muted">No hay facturas pendientes</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // CONFIGURACIÓN GLOBAL
-        let API_URL = localStorage.getItem('vortex_api_url') || '';
+        const API_URL = "https://vortex-api-z33q.onrender.com";
         let TOKEN = localStorage.getItem('vortex_token') || '';
-        let clients = [];
-        let devices = [];
-        let contents = [];
-        
-        // INICIALIZACIÓN
-        document.addEventListener('DOMContentLoaded', () => {
-            if (API_URL && TOKEN) {
-                showMainApp();
+
+        // Verificar si ya hay sesión al cargar
+        if(TOKEN) {
+            console.log('Token encontrado, entrando directo...');
+            showMainApp();
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btn-login');
+            const spinner = document.getElementById('spinner');
+            const btnText = document.getElementById('btn-text');
+            const errorMsg = document.getElementById('error-msg');
+            
+            btn.disabled = true;
+            spinner.classList.remove('d-none');
+            btnText.textContent = 'Conectando...';
+            errorMsg.classList.add('d-none');
+
+            try {
+                console.log('Intentando login a:', API_URL + '/admin/login');
+                const response = await fetch(API_URL + '/admin/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: document.getElementById('login-email').value,
+                        password: document.getElementById('login-password').value
+                    })
+                });
+                
+                console.log('Respuesta status:', response.status);
+                const data = await response.json();
+                console.log('Respuesta data:', data);
+                
+                if (response.ok && data.access_token) {
+                    TOKEN = data.access_token;
+                    localStorage.setItem('vortex_token', TOKEN);
+                    localStorage.setItem('vortex_api_url', API_URL);
+                    
+                    showToast('Bienvenido CEO - Sistema Operativo', 'success');
+                    
+                    // CAMBIO FORZADO DE PANTALLA
+                    setTimeout(() => {
+                        console.log('Cambiando a dashboard...');
+                        showMainApp();
+                    }, 500);
+                    
+                } else {
+                    throw new Error(data.detail || 'Error de autenticación');
+                }
+            } catch (err) {
+                console.error('Error completo:', err);
+                errorMsg.textContent = 'Error: ' + err.message;
+                errorMsg.classList.remove('d-none');
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('d-none');
+                btnText.textContent = 'Ingresar al Sistema';
             }
         });
 
-        // UTILIDADES
+        function showMainApp() {
+            console.log('Ejecutando showMainApp()');
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            loadStats();
+        }
+
+        async function loadStats() {
+            try {
+                console.log('Cargando estadísticas...');
+                const res = await fetch(API_URL + '/admin/stats', {
+                    headers: {'Authorization': 'Bearer ' + TOKEN}
+                });
+                console.log('Stats status:', res.status);
+                if(res.ok) {
+                    const data = await res.json();
+                    console.log('Stats data:', data);
+                    document.getElementById('stat-clients').textContent = data.clients?.total || 0;
+                    document.getElementById('stat-devices').textContent = data.devices?.online || 0;
+                    document.getElementById('stat-revenue').textContent = '$' + (data.revenue?.monthly_collected || 0).toLocaleString('es-CO');
+                    document.getElementById('stat-pending').textContent = '$' + (data.revenue?.pending_collection || 0).toLocaleString('es-CO');
+                }
+            } catch(e) {
+                console.error('Error cargando stats:', e);
+            }
+        }
+
+        function showSection(section, element) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
+            // Remover clase active de todos los nav-links
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            
+            // Mostrar sección seleccionada
+            const sectionEl = document.getElementById('view-' + section);
+            if(sectionEl) sectionEl.style.display = 'block';
+            
+            // Activar el nav-link clickeado
+            if(element) element.classList.add('active');
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `alert alert-${type} alert-dismissible fade show shadow`;
-            toast.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
+            toast.className = 'alert alert-' + type + ' alert-dismissible fade show shadow';
+            toast.innerHTML = message + '<button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>';
             container.appendChild(toast);
-            setTimeout(() => {
-                if(toast.parentNode) toast.remove();
-            }, 5000);
+            setTimeout(() => toast.remove(), 3000);
         }
-
-        function formatMoney(amount) {
-            if (!amount) return '$0';
-            return '$' + amount.toLocaleString('es-CO');
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            return new Date(dateString).toLocaleDateString('es-CO');
-        }
-
-        // AUTENTICACIÓN
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            API_URL = document.getElementById('api-url').value.replace(/\/$/, '');
-            localStorage.setItem('vortex_api_url', API_URL);
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            try {
-                const response = await fetch(`${API_URL}/admin/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({email, password})
-                });
-                
-                const data = await response.json();
-                if (response.ok) {
-                    TOKEN = data.access_token;
-                    localStorage.setItem('vortex_token', TOKEN);
-                    showMainApp();
-                    showToast('Bienvenido CEO - Sistema Operativo');
-                } else {
-                    showToast(data.detail || 'Credenciales inválidas', 'danger');
-                }
-            } catch (err) {
-                showToast('Error de conexión: ' + err.message, 'danger');
-            }
-        });
 
         function logout() {
             localStorage.removeItem('vortex_token');
             location.reload();
-        }
-
-        function showMainApp() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            loadDashboard();
-        }
-
-        // NAVEGACIÓN
-        function showSection(section) {
-            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const sectionEl = document.getElementById(`view-${section}`);
-            if(sectionEl) sectionEl.style.display = 'block';
-            
-            switch(section) {
-                case 'dashboard': loadDashboard(); break;
-                case 'crm': loadClients(); break;
-                case 'devices': loadDevices(); break;
-                case 'map': initMap(); break;
-                case 'content': loadContent(); break;
-                case 'billing': loadInvoices(); break;
-            }
-        }
-
-        // API HELPERS
-        async function apiGet(endpoint) {
-            const res = await fetch(`${API_URL}${endpoint}`, {
-                headers: {'Authorization': `Bearer ${TOKEN}`}
-            });
-            if (res.status === 401) {
-                logout();
-                throw new Error('Sesión expirada');
-            }
-            if (!res.ok) throw new Error(await res.text());
-            return res.json();
-        }
-
-        async function apiPost(endpoint, data) {
-            const res = await fetch(`${API_URL}${endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${TOKEN}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || 'Error en operación');
-            }
-            return res.json();
-        }
-
-        // DASHBOARD
-        async function loadDashboard() {
-            try {
-                // Stats generales
-                const stats = await apiGet('/admin/stats');
-                document.getElementById('stat-clients').textContent = stats.clients?.total || 0;
-                document.getElementById('stat-devices').textContent = stats.devices?.online || 0;
-                document.getElementById('stat-revenue').textContent = formatMoney(stats.revenue?.monthly_collected);
-                document.getElementById('stat-pending').textContent = formatMoney(stats.revenue?.pending_collection);
-                
-                // Status de servicios
-                document.getElementById('db-status').textContent = 'PostgreSQL Conectado';
-                document.getElementById('db-status').className = 'text-success';
-                
-                // Verificar S3
-                const s3 = await apiGet('/content/check-s3');
-                const s3Status = document.getElementById('s3-status');
-                if (s3.configured) {
-                    s3Status.textContent = 'Conectado (' + s3.bucket_name + ')';
-                    s3Status.className = 'text-success';
-                } else {
-                    s3Status.textContent = 'Modo Local (S3 no configurado)';
-                    s3Status.className = 'text-warning';
-                }
-            } catch (err) {
-                console.error(err);
-                showToast('Error cargando dashboard', 'warning');
-            }
-        }
-
-        // CRM CLIENTES
-        async function loadClients() {
-            try {
-                const data = await apiGet('/admin/clients');
-                clients = data.clients || [];
-                const tbody = document.getElementById('clients-table');
-                
-                if (clients.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No hay clientes registrados. Crea el primero.</td></tr>';
-                } else {
-                    tbody.innerHTML = clients.map(c => `
-                        <tr>
-                            <td>${c.nit}</td>
-                            <td><strong>${c.company_name}</strong><br><small>${c.contact_name}</small></td>
-                            <td><span class="badge bg-info">${c.plan.code || 'prime'}</span></td>
-                            <td>${c.plan.units_used || 0}/${(c.plan.units_total || 1) + (c.extra_units || 0)}</td>
-                            <td>${c.plan.holograms_used || 0}/${(c.plan.holograms_total || 5) + (c.extra_holograms || 0)}</td>
-                            <td>${c.status === 'active' ? '<span class="status-pill status-online">Activo</span>' : '<span class="status-pill status-offline">Suspendido</span>'}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-info" onclick="viewClient('${c.id}')" title="Ver detalles"><i class="fas fa-eye"></i></button>
-                                ${(c.usage?.devices_count || 0) === 0 ? 
-                                    `<button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteClient('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>` 
-                                    : ''}
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-                
-                updateClientSelects();
-            } catch (err) {
-                showToast('Error cargando clientes: ' + err.message, 'danger');
-            }
-        }
-
-        function openClientModal() {
-            new bootstrap.Modal(document.getElementById('clientModal')).show();
-        }
-
-        async function saveClient() {
-            const data = {
-                nit: document.getElementById('client-nit').value,
-                company_name: document.getElementById('client-company').value,
-                contact_name: document.getElementById('client-contact').value,
-                email: document.getElementById('client-email').value,
-                phone: document.getElementById('client-phone').value,
-                address: document.getElementById('client-address').value,
-                city: document.getElementById('client-city').value,
-                plan_name: document.getElementById('client-plan').value
-            };
-            
-            try {
-                await apiPost('/admin/clients', data);
-                bootstrap.Modal.getInstance(document.getElementById('clientModal')).hide();
-                document.getElementById('client-form').reset();
-                showToast('Cliente creado exitosamente');
-                loadClients();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        async function deleteClient(id) {
-            if (!confirm('¿Eliminar este cliente permanentemente? No hay vuelta atrás.')) return;
-            try {
-                await fetch(`${API_URL}/admin/clients/${id}`, {
-                    method: 'DELETE',
-                    headers: {'Authorization': `Bearer ${TOKEN}`}
-                });
-                showToast('Cliente eliminado');
-                loadClients();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        function updateClientSelects() {
-            const options = clients.map(c => `<option value="${c.id}">${c.company_name}</option>`).join('');
-            document.getElementById('device-client').innerHTML = '<option value="">Sin asignar (inventario)</option>' + options;
-            document.getElementById('upload-client').innerHTML = '<option value="">Sin asignar (biblioteca general)</option>' + options;
-            document.getElementById('invoice-client').innerHTML = '<option value="">Seleccione cliente...</option>' + options;
-        }
-
-        // DISPOSITIVOS
-        async function loadDevices() {
-            try {
-                const data = await apiGet('/devices/list');
-                devices = data.devices || [];
-                const tbody = document.getElementById('devices-table');
-                
-                if (devices.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No hay proyectores registrados.</td></tr>';
-                } else {
-                    tbody.innerHTML = devices.map(d => `
-                        <tr>
-                            <td><strong>${d.device_id}</strong></td>
-                            <td>${d.client_name || '<span class="text-muted">Sin asignar</span>'}</td>
-                            <td>${d.location_name || '-'}<br><small class="text-muted">${d.city}</small></td>
-                            <td>${d.is_online ? 
-                                '<span class="status-pill status-online">● Online</span>' : 
-                                '<span class="status-pill status-offline">● Offline</span>'}</td>
-                            <td>${d.temperature_c ? d.temperature_c + '°C' : '-'}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary" onclick="openAssignModal('${d.device_id}')" title="Asignar contenido"><i class="fas fa-play"></i></button>
-                                <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteDevice('${d.device_id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-                
-                // Actualizar selects de asignación
-                const deviceOptions = devices.map(d => `<option value="${d.device_id}">${d.device_id} - ${d.location_name}</option>`).join('');
-                document.getElementById('assign-device').innerHTML = deviceOptions;
-            } catch (err) {
-                showToast('Error cargando dispositivos: ' + err.message, 'danger');
-            }
-        }
-
-        function openDeviceModal() {
-            new bootstrap.Modal(document.getElementById('deviceModal')).show();
-        }
-
-        async function saveDevice() {
-            const data = {
-                device_id: document.getElementById('device-id').value,
-                client_id: document.getElementById('device-client').value || null,
-                location_name: document.getElementById('device-location').value,
-                latitude: parseFloat(document.getElementById('device-lat').value) || null,
-                longitude: parseFloat(document.getElementById('device-lng').value) || null,
-                city: document.getElementById('device-city').value
-            };
-            
-            try {
-                await apiPost('/devices/register', data);
-                bootstrap.Modal.getInstance(document.getElementById('deviceModal')).hide();
-                document.getElementById('device-form').reset();
-                showToast('Proyector registrado en la red');
-                loadDevices();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        async function deleteDevice(id) {
-            if (!confirm('¿Eliminar este proyector permanentemente?')) return;
-            try {
-                await fetch(`${API_URL}/devices/${id}`, {
-                    method: 'DELETE',
-                    headers: {'Authorization': `Bearer ${TOKEN}`}
-                });
-                showToast('Dispositivo eliminado');
-                loadDevices();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        // MAPA
-        let map = null;
-        let mapMarkers = [];
-        
-        async function initMap() {
-            if (!map) {
-                map = L.map('map').setView([4.6097, -74.0817], 12);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© Vortex Visual'
-                }).addTo(map);
-            }
-            
-            // Limpiar marcadores
-            mapMarkers.forEach(m => map.removeLayer(m));
-            mapMarkers = [];
-            
-            try {
-                const data = await apiGet('/devices/map-public');
-                data.devices.forEach(d => {
-                    if (d.lat && d.lng) {
-                        const color = d.status === 'online' ? '#00ff87' : '#ff4d6d';
-                        const marker = L.circleMarker([d.lat, d.lng], {
-                            radius: 10,
-                            fillColor: color,
-                            color: '#fff',
-                            weight: 2,
-                            opacity: 1,
-                            fillOpacity: 0.9
-                        }).addTo(map);
-                        marker.bindPopup(`<b>${d.name}</b><br>${d.city}<br>Estado: ${d.status}`);
-                        mapMarkers.push(marker);
-                    }
-                });
-            } catch (err) {
-                console.error('Error cargando mapa:', err);
-            }
-        }
-
-        // CONTENIDO
-        async function loadContent() {
-            try {
-                const data = await apiGet('/content/library');
-                contents = data.contents || [];
-                const tbody = document.getElementById('content-table');
-                
-                if (contents.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Biblioteca vacía. Sube tu primer holograma.</td></tr>';
-                } else {
-                    tbody.innerHTML = contents.map(c => `
-                        <tr>
-                            <td><i class="fas fa-cube me-2 text-info"></i>${c.name}</td>
-                            <td>${c.client_name || '<span class="text-muted">General</span>'}</td>
-                            <td>${c.size_mb ? c.size_mb + ' MB' : '-'}</td>
-                            <td>${c.storage_type === 'S3' ? '<i class="fas fa-cloud text-info"></i> Cloud' : '<i class="fas fa-hdd text-warning"></i> Local'}</td>
-                            <td>${c.status === 'active' ? '<span class="status-pill status-online">Listo</span>' : '<span class="status-pill status-pending">Procesando</span>'}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-success" onclick="downloadContent('${c.id}')" title="Descargar"><i class="fas fa-download"></i></button>
-                                <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteContent('${c.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-                
-                // Actualizar select de contenido
-                const contentOptions = contents.filter(c => c.status === 'active').map(c => 
-                    `<option value="${c.id}">${c.name}</option>`
-                ).join('');
-                document.getElementById('assign-content').innerHTML = contentOptions;
-            } catch (err) {
-                showToast('Error cargando biblioteca: ' + err.message, 'danger');
-            }
-        }
-
-        function openUploadModal() {
-            new bootstrap.Modal(document.getElementById('uploadModal')).show();
-        }
-
-        async function checkS3Status() {
-            try {
-                const s3 = await apiGet('/content/check-s3');
-                if (s3.configured) {
-                    showToast(`S3 Conectado: ${s3.bucket_name}`, 'success');
-                } else {
-                    showToast('S3 no configurado. Archivos se guardan localmente.', 'warning');
-                }
-            } catch (err) {
-                showToast('Error verificando almacenamiento', 'danger');
-            }
-        }
-
-        async function handleFileSelect(input) {
-            const file = input.files[0];
-            if (!file) return;
-            if (!file.name.endsWith('.bin')) {
-                showToast('Solo archivos .bin permitidos (formato holográfico)', 'danger');
-                return;
-            }
-
-            const clientId = document.getElementById('upload-client').value;
-            const progressDiv = document.getElementById('upload-progress');
-            const progressBar = document.getElementById('progress-bar');
-            const statusText = document.getElementById('upload-status');
-            
-            progressDiv.style.display = 'block';
-            progressBar.style.width = '30%';
-            statusText.textContent = 'Iniciando subida segura...';
-
-            try {
-                // 1. Verificar S3
-                const s3Check = await apiGet('/content/check-s3');
-                
-                if (s3Check.configured) {
-                    // Subida S3 (pre-signed URL)
-                    statusText.textContent = 'Generando URL segura...';
-                    const urlData = await apiGet(`/content/get-upload-url?filename=${encodeURIComponent(file.name)}&client_id=${clientId}&file_size=${file.size}`);
-                    
-                    progressBar.style.width = '60%';
-                    statusText.textContent = 'Transmitiendo a Cloud...';
-                    
-                    // Subir directo a S3
-                    const uploadRes = await fetch(urlData.presigned_url, {
-                        method: 'PUT',
-                        body: file,
-                        headers: {'Content-Type': 'application/octet-stream'}
-                    });
-                    
-                    if (!uploadRes.ok) throw new Error('Error en transmisión a S3');
-                    
-                    // Confirmar en backend
-                    await apiPost(`/content/confirm-s3-upload/${urlData.content_id}?file_size=${file.size}`, {});
-                    
-                } else {
-                    // Subida Local (multipart)
-                    statusText.textContent = 'Subiendo a servidor local...';
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('client_id', clientId || 'general');
-                    
-                    const res = await fetch(`${API_URL}/content/upload-local`, {
-                        method: 'POST',
-                        headers: {'Authorization': `Bearer ${TOKEN}`},
-                        body: formData
-                    });
-                    
-                    if (!res.ok) throw new Error('Error en servidor local');
-                }
-                
-                progressBar.style.width = '100%';
-                statusText.textContent = 'Completado exitosamente';
-                showToast('Holograma subido correctamente');
-                
-                setTimeout(() => {
-                    bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
-                    progressDiv.style.display = 'none';
-                    progressBar.style.width = '0%';
-                    loadContent();
-                }, 1500);
-                
-            } catch (err) {
-                showToast('Error: ' + err.message, 'danger');
-                progressDiv.style.display = 'none';
-            }
-        }
-
-        async function deleteContent(id) {
-            if (!confirm('¿Eliminar este archivo permanentemente?')) return;
-            try {
-                await fetch(`${API_URL}/content/${id}`, {
-                    method: 'DELETE',
-                    headers: {'Authorization': `Bearer ${TOKEN}`}
-                });
-                showToast('Contenido eliminado');
-                loadContent();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        function openAssignModal(deviceId = '') {
-            if (deviceId) document.getElementById('assign-device').value = deviceId;
-            new bootstrap.Modal(document.getElementById('assignModal')).show();
-        }
-
-        async function assignContent() {
-            const contentId = document.getElementById('assign-content').value;
-            const deviceId = document.getElementById('assign-device').value;
-            
-            if (!contentId || !deviceId) {
-                showToast('Selecciona contenido y dispositivo', 'warning');
-                return;
-            }
-            
-            try {
-                await apiPost(`/content/${contentId}/assign-to-device/${deviceId}`);
-                bootstrap.Modal.getInstance(document.getElementById('assignModal')).hide();
-                showToast('Comando enviado al proyector. El contenido se descargará en segundos.');
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        // FACTURACIÓN
-        async function loadInvoices() {
-            try {
-                const data = await apiGet('/admin/invoices');
-                const tbody = document.getElementById('invoices-table');
-                
-                if (data.invoices.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No hay facturas generadas.</td></tr>';
-                } else {
-                    tbody.innerHTML = data.invoices.map(inv => `
-                        <tr>
-                            <td><strong>${inv.number}</strong></td>
-                            <td>${inv.client_name}</td>
-                            <td>${formatMoney(inv.amount_cop)}</td>
-                            <td>${formatDate(inv.due_date)}</td>
-                            <td>${getInvoiceStatusBadge(inv.status)}</td>
-                            <td>
-                                ${inv.status === 'pending' ? 
-                                    `<button class="btn btn-sm btn-success" onclick="payInvoice('${inv.id}')"><i class="fas fa-check"></i> Marcar Pagada</button>` 
-                                    : '<span class="text-muted"><i class="fas fa-check-circle"></i> Completada</span>'}
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (err) {
-                showToast('Error cargando cartera: ' + err.message, 'danger');
-            }
-        }
-
-        function getInvoiceStatusBadge(status) {
-            if (status === 'paid') return '<span class="status-pill status-online">Pagada</span>';
-            if (status === 'pending') return '<span class="status-pill status-pending">Pendiente</span>';
-            return '<span class="status-pill status-offline">Vencida</span>';
-        }
-
-        function openInvoiceModal() {
-            new bootstrap.Modal(document.getElementById('invoiceModal')).show();
-        }
-
-        async function saveInvoice() {
-            const data = {
-                client_id: document.getElementById('invoice-client').value,
-                amount_cop: parseInt(document.getElementById('invoice-amount').value),
-                description: document.getElementById('invoice-desc').value,
-                due_date: document.getElementById('invoice-due').value || new Date().toISOString(),
-                invoice_type: document.getElementById('invoice-type').value
-            };
-            
-            if (!data.client_id || !data.amount_cop) {
-                showToast('Complete cliente y monto', 'warning');
-                return;
-            }
-            
-            try {
-                await apiPost('/admin/invoices', data);
-                bootstrap.Modal.getInstance(document.getElementById('invoiceModal')).hide();
-                document.getElementById('invoice-form').reset();
-                showToast('Factura generada y notificación enviada');
-                loadInvoices();
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        async function payInvoice(id) {
-            if (!confirm('¿Confirmar pago recibido?')) return;
-            try {
-                await apiPost(`/admin/invoices/${id}/pay`, {payment_method: 'transferencia'});
-                showToast('Factura marcada como pagada. Dispositivos desbloqueados automáticamente.');
-                loadInvoices();
-                loadDashboard(); // Actualizar métricas
-            } catch (err) {
-                showToast(err.message, 'danger');
-            }
-        }
-
-        function viewClient(id) {
-            showToast('Detalles del cliente: ' + id, 'info');
         }
     </script>
 </body>
