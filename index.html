@@ -6,82 +6,75 @@
     <title>Vortex Visual | Panel CEO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root { --bg-dark: #070b14; --bg-panel: #0f172a; --accent-pink: #ff4d6d; --accent-cyan: #00f2fe; }
         body { background-color: var(--bg-dark); color: #f1f5f9; font-family: 'Segoe UI', sans-serif; margin: 0; }
-        .cyber-card { background-color: var(--bg-panel); border: 1px solid #1e293b; border-radius: 16px; padding: 25px; }
-        .btn-vortex { background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); border: none; color: white; font-weight: bold; border-radius: 8px; padding: 10px 20px; cursor: pointer; }
-        .btn-vortex:hover { opacity: 0.9; color: white; }
-        .form-control { background-color: #1e293b; border: 1px solid #334155; color: white; }
-        .form-control:focus { background-color: #1e293b; color: white; border-color: var(--accent-cyan); }
-        .sidebar { width: 280px; background-color: var(--bg-panel); border-right: 1px solid #1e293b; position: fixed; height: 100vh; padding-top: 25px; z-index: 1000; left: 0; top: 0; }
+        .sidebar { width: 280px; background: var(--bg-panel); border-right: 1px solid #1e293b; position: fixed; height: 100vh; padding-top: 20px; z-index: 1000; }
         .main-content { margin-left: 280px; padding: 40px; }
-        .nav-link { color: #64748b; padding: 12px 20px; border-radius: 10px; margin: 5px 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
+        .logo-box { width: 100%; height: 60px; background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; letter-spacing: 3px; margin-bottom: 20px; }
+        .nav-link { color: #64748b; padding: 12px 20px; margin: 5px 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; text-decoration: none; }
         .nav-link:hover, .nav-link.active { color: var(--accent-cyan); background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .cyber-card { background: var(--bg-panel); border: 1px solid #1e293b; border-radius: 16px; padding: 25px; margin-bottom: 25px; }
+        .btn-vortex { background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); border: none; color: white; font-weight: bold; border-radius: 8px; padding: 10px 20px; cursor: pointer; }
         .metric-card { background: linear-gradient(135deg, rgba(255,77,109,0.1), rgba(0,242,254,0.1)); border: 1px solid rgba(0,242,254,0.2); border-radius: 12px; padding: 20px; text-align: center; }
         .metric-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo-box { width: 100%; height: 60px; background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; letter-spacing: 3px; }
+        .form-control, .form-select { background-color: #1e293b; border: 1px solid #334155; color: white; }
+        #map { height: 500px; border-radius: 12px; border: 1px solid #1e293b; }
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
-        #main-app { display: none; }
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toast-container"></div>
+    <!-- Toast -->
+    <div class="toast-container" id="toasts"></div>
 
-    <!-- Login Screen -->
-    <div id="login-screen">
+    <!-- LOGIN -->
+    <div id="login-screen" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
         <div class="cyber-card" style="width: 400px;">
             <div class="text-center mb-4">
-                <div class="logo-box mb-3">VORTEX</div>
+                <div class="logo-box">VORTEX</div>
                 <h4>Panel de Control CEO</h4>
             </div>
-            <div id="error-msg" class="alert alert-danger d-none"></div>
+            <div id="login-error" class="alert alert-danger d-none"></div>
             <form id="login-form">
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" id="login-email" value="ceo@vortex.com" required>
+                    <input type="email" class="form-control" id="email" value="ceo@vortex.com" placeholder="Email">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="login-password" value="Vortex2026!" required>
+                    <input type="password" class="form-control" id="password" value="Vortex2026!" placeholder="Contraseña">
                 </div>
-                <button type="submit" class="btn btn-vortex w-100" id="btn-login">
-                    <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
-                    <span id="btn-text">Ingresar al Sistema</span>
-                </button>
-                <div class="mt-3">
-                    <input type="text" id="api-url" class="form-control form-control-sm" value="https://vortex-api-z33q.onrender.com" readonly>
-                </div>
+                <button type="submit" class="btn-vortex w-100">Ingresar al Sistema</button>
             </form>
         </div>
     </div>
 
-    <!-- Main App -->
-    <div id="main-app">
+    <!-- APP -->
+    <div id="main-app" class="hidden">
         <div class="sidebar">
-            <div class="p-4 border-bottom border-secondary">
-                <div class="logo-box" style="height: 50px;">VORTEX</div>
+            <div class="px-4 pb-3">
+                <div class="logo-box" style="height: 50px; font-size: 14px;">VORTEX</div>
             </div>
-            <nav class="nav flex-column mt-3">
-                <a class="nav-link active" onclick="showSection('dashboard', this)"><i class="fas fa-th-large me-3"></i> Dashboard</a>
-                <a class="nav-link" onclick="showSection('crm', this)"><i class="fas fa-users me-3"></i> CRM Clientes</a>
-                <a class="nav-link" onclick="showSection('devices', this)"><i class="fas fa-microchip me-3"></i> Dispositivos</a>
-                <a class="nav-link" onclick="showSection('billing', this)"><i class="fas fa-file-invoice-dollar me-3"></i> Facturación</a>
+            <nav>
+                <div class="nav-link active" onclick="nav('dashboard')"><i class="fas fa-th-large me-3"></i> Dashboard</div>
+                <div class="nav-link" onclick="nav('crm')"><i class="fas fa-users me-3"></i> CRM Clientes</div>
+                <div class="nav-link" onclick="nav('devices')"><i class="fas fa-microchip me-3"></i> Dispositivos</div>
+                <div class="nav-link" onclick="nav('map')"><i class="fas fa-map-marked-alt me-3"></i> Mapa GPS</div>
+                <div class="nav-link" onclick="nav('billing')"><i class="fas fa-file-invoice-dollar me-3"></i> Facturación</div>
                 <hr class="mx-3 border-secondary">
-                <a class="nav-link text-danger" onclick="logout()"><i class="fas fa-power-off me-3"></i> Salir</a>
+                <div class="nav-link text-danger" onclick="logout()"><i class="fas fa-power-off me-3"></i> Salir</div>
             </nav>
         </div>
 
         <div class="main-content">
+            <!-- DASHBOARD -->
             <div id="view-dashboard" class="view-section">
                 <h2 class="mb-4">Dashboard Ejecutivo</h2>
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="metric-card">
-                            <small class="text-muted">Clientes Activos</small>
+                            <small class="text-muted">Clientes</small>
                             <div class="metric-value" id="stat-clients">0</div>
                         </div>
                     </div>
@@ -105,173 +98,154 @@
                     </div>
                 </div>
                 <div class="cyber-card">
-                    <h5 class="mb-3">Estado del Sistema</h5>
-                    <p><i class="fas fa-check-circle text-success me-2"></i> API: Conectada</p>
-                    <p><i class="fas fa-check-circle text-success me-2"></i> Base de Datos: Operativa</p>
-                    <p><i class="fas fa-user-shield text-info me-2"></i> Usuario: CEO</p>
+                    <h5>Estado del Sistema</h5>
+                    <p class="text-success"><i class="fas fa-check-circle"></i> API Conectada</p>
+                    <p class="text-success"><i class="fas fa-database"></i> Base de Datos: Operativa</p>
                 </div>
             </div>
 
-            <div id="view-crm" class="view-section" style="display:none;">
+            <!-- CRM -->
+            <div id="view-crm" class="view-section hidden">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Gestión de Clientes</h2>
-                    <button class="btn btn-vortex" onclick="alert('Función de creación de clientes - En desarrollo')"><i class="fas fa-plus me-2"></i>Nuevo Cliente</button>
+                    <button class="btn-vortex" onclick="alert('Crear cliente - En desarrollo')"><i class="fas fa-plus me-2"></i>Nuevo Cliente</button>
                 </div>
                 <div class="cyber-card">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th>NIT</th>
-                                <th>Empresa</th>
-                                <th>Plan</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">No hay clientes registrados aún</td>
-                            </tr>
-                        </tbody>
+                    <table class="table table-dark">
+                        <thead><tr><th>NIT</th><th>Empresa</th><th>Plan</th><th>Estado</th></tr></thead>
+                        <tbody id="clients-tbody"><tr><td colspan="4" class="text-center text-muted">No hay clientes</td></tr></tbody>
                     </table>
                 </div>
             </div>
-            
-            <div id="view-devices" class="view-section" style="display:none;">
+
+            <!-- DEVICES -->
+            <div id="view-devices" class="view-section hidden">
                 <h2 class="mb-4">Dispositivos</h2>
-                <div class="cyber-card">
-                    <p>Gestión de proyectores holográficos</p>
-                    <p class="text-muted">Lista de dispositivos aparecerá aquí</p>
+                <div class="cyber-card">Lista de proyectores holográficos</div>
+            </div>
+
+            <!-- MAPA -->
+            <div id="view-map" class="view-section hidden">
+                <h2 class="mb-4">Mapa de Dispositivos GPS</h2>
+                <div class="cyber-card p-2">
+                    <div id="map"></div>
                 </div>
             </div>
-            
-            <div id="view-billing" class="view-section" style="display:none;">
+
+            <!-- BILLING -->
+            <div id="view-billing" class="view-section hidden">
                 <h2 class="mb-4">Facturación</h2>
-                <div class="cyber-card">
-                    <p>Cartera y facturas</p>
-                    <p class="text-muted">No hay facturas pendientes</p>
-                </div>
+                <div class="cyber-card">Cartera y facturas pendientes</div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const API_URL = "https://vortex-api-z33q.onrender.com";
-        let TOKEN = localStorage.getItem('vortex_token') || '';
+        const API = "https://vortex-api-z33q.onrender.com";
+        let token = localStorage.getItem("vtoken") || "";
+        let map = null;
+        let mapLoaded = false;
 
-        // Verificar si ya hay sesión al cargar
-        if(TOKEN) {
-            console.log('Token encontrado, entrando directo...');
-            showMainApp();
-        }
+        // Si hay token, entrar directo
+        if(token) showApp();
 
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        // Login handler
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
+            const btn = e.target.querySelector("button");
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
             
-            const btn = document.getElementById('btn-login');
-            const spinner = document.getElementById('spinner');
-            const btnText = document.getElementById('btn-text');
-            const errorMsg = document.getElementById('error-msg');
-            
-            btn.disabled = true;
-            spinner.classList.remove('d-none');
-            btnText.textContent = 'Conectando...';
-            errorMsg.classList.add('d-none');
-
             try {
-                console.log('Intentando login a:', API_URL + '/admin/login');
-                const response = await fetch(API_URL + '/admin/login', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                const res = await fetch(API + "/admin/login", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
-                        email: document.getElementById('login-email').value,
-                        password: document.getElementById('login-password').value
+                        email: document.getElementById("email").value,
+                        password: document.getElementById("password").value
                     })
                 });
+                const data = await res.json();
                 
-                console.log('Respuesta status:', response.status);
-                const data = await response.json();
-                console.log('Respuesta data:', data);
-                
-                if (response.ok && data.access_token) {
-                    TOKEN = data.access_token;
-                    localStorage.setItem('vortex_token', TOKEN);
-                    localStorage.setItem('vortex_api_url', API_URL);
-                    
-                    showToast('Bienvenido CEO - Sistema Operativo', 'success');
-                    
-                    // CAMBIO FORZADO DE PANTALLA
-                    setTimeout(() => {
-                        console.log('Cambiando a dashboard...');
-                        showMainApp();
-                    }, 500);
-                    
+                if(data.access_token) {
+                    token = data.access_token;
+                    localStorage.setItem("vtoken", token);
+                    showApp();
                 } else {
-                    throw new Error(data.detail || 'Error de autenticación');
+                    throw new Error(data.detail || "Error");
                 }
-            } catch (err) {
-                console.error('Error completo:', err);
-                errorMsg.textContent = 'Error: ' + err.message;
-                errorMsg.classList.remove('d-none');
+            } catch(err) {
+                document.getElementById("login-error").textContent = err.message;
+                document.getElementById("login-error").classList.remove("d-none");
             } finally {
-                btn.disabled = false;
-                spinner.classList.add('d-none');
-                btnText.textContent = 'Ingresar al Sistema';
+                btn.textContent = "Ingresar al Sistema";
             }
         });
 
-        function showMainApp() {
-            console.log('Ejecutando showMainApp()');
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
+        function showApp() {
+            document.getElementById("login-screen").classList.add("hidden");
+            document.getElementById("main-app").classList.remove("hidden");
             loadStats();
         }
 
         async function loadStats() {
             try {
-                console.log('Cargando estadísticas...');
-                const res = await fetch(API_URL + '/admin/stats', {
-                    headers: {'Authorization': 'Bearer ' + TOKEN}
+                const res = await fetch(API + "/admin/stats", {
+                    headers: {"Authorization": "Bearer " + token}
                 });
-                console.log('Stats status:', res.status);
-                if(res.ok) {
-                    const data = await res.json();
-                    console.log('Stats data:', data);
-                    document.getElementById('stat-clients').textContent = data.clients?.total || 0;
-                    document.getElementById('stat-devices').textContent = data.devices?.online || 0;
-                    document.getElementById('stat-revenue').textContent = '$' + (data.revenue?.monthly_collected || 0).toLocaleString('es-CO');
-                    document.getElementById('stat-pending').textContent = '$' + (data.revenue?.pending_collection || 0).toLocaleString('es-CO');
-                }
-            } catch(e) {
-                console.error('Error cargando stats:', e);
+                const data = await res.json();
+                document.getElementById("stat-clients").textContent = data.clients?.total || 0;
+                document.getElementById("stat-devices").textContent = data.devices?.online || 0;
+                document.getElementById("stat-revenue").textContent = "$" + (data.revenue?.monthly_collected || 0).toLocaleString();
+                document.getElementById("stat-pending").textContent = "$" + (data.revenue?.pending_collection || 0).toLocaleString();
+            } catch(e) { console.error(e); }
+        }
+
+        function nav(section) {
+            // Ocultar todo
+            document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
+            document.querySelectorAll(".nav-link").forEach(el => el.classList.remove("active"));
+            
+            // Mostrar seleccionado
+            document.getElementById("view-" + section).classList.remove("hidden");
+            event.target.classList.add("active");
+            
+            // Inicializar mapa si es necesario
+            if(section === "map" && !mapLoaded) {
+                setTimeout(initMap, 100);
             }
         }
 
-        function showSection(section, element) {
-            // Ocultar todas las secciones
-            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
-            // Remover clase active de todos los nav-links
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        function initMap() {
+            if(map) return;
             
-            // Mostrar sección seleccionada
-            const sectionEl = document.getElementById('view-' + section);
-            if(sectionEl) sectionEl.style.display = 'block';
+            map = L.map('map').setView([4.6097, -74.0817], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© Vortex'
+            }).addTo(map);
             
-            // Activar el nav-link clickeado
-            if(element) element.classList.add('active');
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'alert alert-' + type + ' alert-dismissible fade show shadow';
-            toast.innerHTML = message + '<button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>';
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            // Cargar dispositivos
+            fetch(API + "/devices/map-public", {
+                headers: {"Authorization": "Bearer " + token}
+            })
+            .then(r => r.json())
+            .then(data => {
+                data.devices?.forEach(d => {
+                    if(d.lat && d.lng) {
+                        const color = d.status === 'online' ? '#00ff87' : '#ff4d6d';
+                        L.circleMarker([d.lat, d.lng], {
+                            radius: 8, fillColor: color, color: '#fff', weight: 2, fillOpacity: 0.8
+                        }).addTo(map).bindPopup(`<b>${d.name}</b><br>${d.city}`);
+                    }
+                });
+            });
+            
+            mapLoaded = true;
         }
 
         function logout() {
-            localStorage.removeItem('vortex_token');
+            localStorage.removeItem("vtoken");
             location.reload();
         }
     </script>
